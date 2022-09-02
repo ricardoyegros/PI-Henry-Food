@@ -7,12 +7,12 @@ router.get( '/', async ( req, res, next ) => {
     let defaultDietsFromApi = ['Gluten Free','Ketogenic', 'Vegetarian','Lacto-Vegetarian', 'Ovo-Vegetarian', 'Vegan', 'Pescetarian', 'Paleo', 'Primal', 'Low FODMAP', 'Whole30'];
     try {
         defaultDietsFromApi.forEach(diet => Diet.findOrCreate({
-            where: {
-                name : diet
-            }
-        }))
-        let typesD = await Diet.findAll();
-        res.json(typesD);
+        where: {
+            name : diet
+        }
+    }))
+    let typesOfDietsInDb = await Diet.findAll();
+    res.json(typesOfDietsInDb);
     } catch (error) {
         next(error);        
     }
