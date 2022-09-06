@@ -8,10 +8,10 @@ export default function LandingPage () {
     return (
         <div className="landing-page">
             <h1 className="text-landing-page">
-                Hola soy un h1 de prueba
+                Hola mucho gusto aqui en HenryFood seremos tus mejores aliados a la hora de cocinar, brindandote las mejores recetas
             </h1>
-            <Link to="/home" id="landing-page-link">
-                <button className="landing-page-button">Hola soy un boton de prueba</button>
+            <Link to="/home-page" id="link-to-home-page">
+                <button className="landing-page-button">Comencemos Ahora!</button>
             </Link>
         </div>
     )

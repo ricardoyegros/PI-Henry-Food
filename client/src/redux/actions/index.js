@@ -1,5 +1,61 @@
-export const GET_RECIPES = "GET RECIPES";
-
+import axios from "axios";
+export const GET_RECIPES = "GET_RECIPES";
+export const ALPHABETIC_SORT = "ALPHABETIC_SORT";
+export const SORT_BY_SCORE = "SORT_BY_SCORE";
+export const FILTER_BY_DIETS = "FILTER_BY_DIETS";
+export const SEARCH_BAR = "SEARCH_BAR";
+export const ADD_NEW_RECIPE = "ADD_NEW_RECIPE";
 //import {axios} from "axios";
 //let n = axios.get("localhost:3001/api/recipes").then(res => res.data)
 
+export function getRecipies() {
+  return async function (dispatch) {
+    try {
+      let allR = await axios.get("http://localhost:3001/api/recipes/");
+      return dispatch({
+        type: GET_RECIPES,
+        payload: allR.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export default function findFromSearchBar(payload) {
+  return function (dispatch) {
+    let recipesBySearchBar = axios
+      .get(`http://localhost:3001/api/recipes/?name=${payload}`)
+      .then((results) => dispatch({ type: SEARCH_BAR, payload: results.data }))
+      .catch((error) => alert("No se encontraron recetas con este nombre"));
+  };
+}
+export function alphabeticSort(payload) {
+  return {
+    type: ALPHABETIC_SORT,
+    payload,
+  };
+}
+
+export function orderByScore(payload) {
+  return {
+    type: SORT_BY_SCORE,
+    payload,
+  };
+}
+
+export function filterByDiets(payload) {
+  return {
+    type: FILTER_BY_DIETS,
+    payload,
+  };
+}
+
+export function addNewRecipe(payload) {
+  return function (dispatch) {
+    let newRecipe = axios
+      .get(`http://localhost:3001/api/recipes/`, payload)
+      .then((newRecipe) => dispatch({ type: ADD_NEW_RECIPE , payload: newRecipe.data }))
+      .catch((error) => console.log(error));
+  };
+}

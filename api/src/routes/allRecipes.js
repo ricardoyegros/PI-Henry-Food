@@ -3,11 +3,11 @@ const router = Router();
 const { Recipe, Diet } = require("../db.js");
 const axios = require("axios");
 const { URL_SPOON, YOUR_API_KEY } = process.env;
-const {Op} = require("sequelize");
+const { Op } = require("sequelize");
 
 router.post("/", async (req, res, next) => {
-  // res.send('soy el post de recipe')
-  let { name, summary, healthScore, image, steps, diets } = req.body;
+  // res.send('soy el post de recipe') 1
+  let { name, summary, healthScore, image, steps, dishTypes, diets } = req.body;
   try {
     let recipeN = await Recipe.create({
       name,
@@ -15,6 +15,7 @@ router.post("/", async (req, res, next) => {
       healthScore,
       image,
       steps,
+      dishTypes,
     });
     let dietN = await Diet.findAll({
       where: { name: diets },
@@ -26,7 +27,6 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-
 // router.get("/", async (req, res, next) => {
 //     let { name } = req.query;
 //     if(name){
@@ -34,8 +34,8 @@ router.post("/", async (req, res, next) => {
 //             let recipeListDb = await Recipe.findAll({
 //                 where: {
 //               name:{
-//                [Op.iLike] : "%" + name + "%"    
-//             } 
+//                [Op.iLike] : "%" + name + "%"
+//             }
 //             },
 //           });
 //           let recipeListApi = await axios.get(
@@ -67,36 +67,53 @@ router.post("/", async (req, res, next) => {
 router.get("/", async (req, res, next) => {
   let { name } = req.query;
   try {
-
-    if(name){
+    if (name) {
       let recipeListDb = await Recipe.findAll({
-              where: {
-            name:{
-             [Op.iLike] : "%" + name + "%"    
-          } 
-          }, include: Diet
-        });
-        let recipeListApi = await axios.get(
-          `${URL_SPOON}?apiKey=${YOUR_API_KEY}&addRecipeInformation=true`
-          ); // .then(data => data.results.filter(el => el.title.toLowerCase().includes(name.toLowerCase()));
-          let recipeName = await recipeListApi.data.results.filter((el) =>
-          el.title.toLowerCase().includes(name.toLowerCase())
-        );
-        let getAllRecipes = [...recipeListDb, ...recipeName];
-        if (getAllRecipes.length > 0) {
-          res.json(getAllRecipes);
-        } else {
-          res.status(404).send("No se encontraron recetas con ese nombre");
-        }
+        where: {
+          name: {
+            [Op.iLike]: "%" + name + "%",
+          },
+        },
+        include: Diet,
+      });
+      let recipeListApi = await axios.get(
+        `${URL_SPOON}?apiKey=${YOUR_API_KEY}&addRecipeInformation=true`
+      ); // .then(data => data.results.filter(el => el.title.toLowerCase().includes(name.toLowerCase()));
+      let recipeName = await recipeListApi.data.results.filter((el) =>
+        el.title.toLowerCase().includes(name.toLowerCase())
+      );
+      let getAllRecipes = [...recipeListDb, ...recipeName];
+      if (getAllRecipes.length > 0) {
+        res.json(getAllRecipes);
       } else {
-        let allRecipesFromApi = await axios.get(
-            `${URL_SPOON}?apiKey=${YOUR_API_KEY}&addRecipeInformation=true`).then(el => el.data.results);
-        let allRecipesFromDb = await Recipe.findAll({include: Diet});
-        let finalRecipes = [...allRecipesFromApi, ...allRecipesFromDb];
-        res.json(finalRecipes);
-      }} catch (error) {
-        next(error);
+        res.status(404).send("No se encontraron recetas con ese nombre");
+      }
+    } else {
+      let array = [];
+      let allRecipesFromApi = await axios
+        .get(`${URL_SPOON}?number=100&apiKey=${YOUR_API_KEY}&addRecipeInformation=true`)
+        .then((el) => el.data.results);
+      allRecipesFromApi?.map((el) =>
+        array.push({
+          id: el.id,
+          name: el.title,
+          summary: el.summary,
+          healthScore: el.healthScore,
+          dishTypes: el.dishTypes[0],
+          image: el.image,
+          steps: el.analyzedInstructions[0]?.steps.map(e =>e.step).join(),
+          diets: el.vegetarian
+            ? [ ...el.diets, "vegetarian"]
+            : el.diets.map((nd) => nd + " "),
+        })
+      );
+      let allRecipesFromDb = await Recipe.findAll({ include: Diet });
+      let finalRecipes = array.concat(allRecipesFromDb) /*[...array , ...allRecipesFromDb];*/
+      res.json(finalRecipes);
     }
+  } catch (error) {
+    next(error);
+  }
 });
 
 // - [ ] Los campos mostrados en la ruta principal para cada receta (imagen, nombre, tipo de plato y tipo de dieta)
@@ -112,22 +129,24 @@ router.get("/:id", async (req, res) => {
         id
       )
     ) {
-        let idDb = await Recipe.findAll({
+      let idDb = await Recipe.findAll({
         where: {
           id: id,
         },
-        include: Diet
+        include: Diet,
       });
       if (idDb.length > 0) {
         let result = idDb.map((elemento) => {
           return {
             id: elemento.id,
             name: elemento.name,
-            summary: elemento.summary.replace(/<[^>]+>/g, ''),
+            summary: elemento.summary.replace(/<[^>]+>/g, ""),
             healthScore: elemento.healthScore,
             image: elemento.image,
             steps: elemento.steps,
-            diets: elemento.vegetarian ? [... elemento.diets, "vegetarian"] : elemento.diets.map(nd => nd),
+            diets: elemento.vegetarian
+              ? [...elemento.diets , "vegetarian"]
+              : elemento.diets.map((nd) => nd),
           };
         });
         //console.log(result)
@@ -140,10 +159,10 @@ router.get("/:id", async (req, res) => {
         `${URL_SPOON}?apiKey=${YOUR_API_KEY}&addRecipeInformation=true`
       );
       let idFromApi = await infoFromApi.data.results.filter(
-          (el) => el.id == id
+        (el) => el.id == id
       );
       if (idFromApi.length > 0) {
-          //console.log(idFromApi);
+        //console.log(idFromApi);
         let resultFromApi = idFromApi.map((elemento) => {
           return {
             name: elemento.title,
@@ -154,18 +173,20 @@ router.get("/:id", async (req, res) => {
             image: elemento.image,
             id: elemento.id,
             healthScore: elemento.healthScore,
-            diets: elemento.vegetarian ? [... elemento.diets, "vegetarian"] : elemento.diets.map(nd => nd),
+            diets: elemento.vegetarian
+              ? [...elemento.diets , "vegetarian"]
+              : elemento.diets.map((nd) => nd),
             dishTypes: elemento.dishTypes?.map((types) => types),
-            summary: elemento.summary.replace(/<[^>]+>/g, ''),
+            summary: elemento.summary.replace(/<[^>]+>/g, ""),
             steps: elemento.instructions,
           };
         });
         res.json(resultFromApi);
-    } else {
+      } else {
         res.status(404).send("No se encontraron recetas con ese id");
       }
     }
-} catch (error) {
+  } catch (error) {
     next(error);
   }
 });

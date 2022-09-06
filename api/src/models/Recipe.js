@@ -26,6 +26,9 @@ module.exports = (sequelize) => {
     },
     steps: {
       type: DataTypes.TEXT
+    },
+    dishTypes: {
+      type: DataTypes.STRING
     }
   });
 };
