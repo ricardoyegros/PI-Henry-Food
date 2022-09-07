@@ -93,8 +93,8 @@ function handleTypesOfDiets(e) {
       <div>
         {allRecipes.length > 0
           ? allRecipes.map((recipe, i) => (
+            <Link to={`/home-page/${recipe.id}`} key={i}>
               <RecipeCard
-                key={i}
                 id={recipe.idApi ? recipe.idApi : recipe.id}
                 name={recipe.name ||recipe.title}
                 image={recipe.image}
@@ -102,6 +102,7 @@ function handleTypesOfDiets(e) {
                 dishTypes={recipe.dishTypes}
                 diets={recipe.diets}
               />
+            </Link>
             ))
           : "No se encontraron recetas para mostrar"}
       </div>

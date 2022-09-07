@@ -16,67 +16,90 @@ import { useState } from "react";
 //  Por ejemplo: Que el nombre de la receta no pueda contener símbolos,
 //  que el health score no pueda exceder determinado valor, etc.
 
-function validatorFunction(something) {
-  let someError = {};
-  if (!something.name ) someError.name = "Dont forget complete the recipe name";
-  if (!something.summary)
-    someError.summary = "Dont forget complete the summary section";
-  if (
-    !typeof something.healthScore === "Number" ||
-    !something.healthScore >= 0 ||
-    !something.healthScore <= 100
-  )
-    someError.healthScore =
-      "Dont forget the healthScore must be a 'Number' beetween 0 - 100";
-}
+// function validatorFunction(something) {
+//   let someError = {};
+//   if (!something.name ) someError.name = "Dont forget complete the recipe name";
+//   if (!something.summary)
+//     someError.summary = "Dont forget complete the summary section";
+//   if (
+//     !typeof something.healthScore === "Number" ||
+//     !something.healthScore >= 0 ||
+//     !something.healthScore <= 100
+//   )
+//     someError.healthScore =
+//       "Dont forget the healthScore must be a 'Number' beetween 0 - 100";
+// }
 
 export default function AddNewRecipe() {
-  let [state, setState] = useState({
-    name: ""
-  });
-  let [errors, setErrors] = useState({})
-  function handleChange(e) {
-    e.preventDefault();
-    setState((prevState) => {
-      let newState = {
-        ...prevState,
-        [e.target.name]: e.target.value,
-      }
-      let newStateToValidate = validatorFunction(newState)
-      setErrors(newStateToValidate)
-      return newState
-    });
-  }
+  let [form, setForm] = useState({});
 
+  function handleChange(e) {
+    setForm({
+        ...form,
+        [e.target.name]: e.target.value})}
+  //     
+  //     let newStateToValidate = validatorFunction(newState)
+  //     setErrors(newStateToValidate)
+  //     return newState
+  //   });
+  function handleSubmit(e) {
+    e.preventDefault();
+    alert("El formulario se ha enviado")
+  }
   return (
     <div>
       <h1>Create and Share Your Own Recipe</h1>
-      <form>
-        <label>Name: </label>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="name">Name: </label>
         <input
+          id="name"
           name="name"
           type="text"
-          value={state.name}
-          onChange={(e) => {
-            handleChange(e);
-          }}
+          value={form.name}
+          onChange={handleChange}
         />
         <br />
         <br />
         <label>Summary: </label>
-        <textarea />
+        <textarea
+          id="summary"
+          name="summary"
+          type="text"
+          value={form.summary}
+          onChange={handleChange}
+        />
         <br />
         <br />
         <label>Healthscore: </label>
-        <input />
+        <input
+          id="healthScore"
+          name="healthScore"
+          type="number"
+          min="0"
+          max="100"
+          value={form.healthScore}
+          onChange={handleChange}
+        />
         <br />
         <br />
         <label>Steps:</label>
-        <textarea />
+        <textarea
+          id="steps"
+          name="steps"
+          type="text"
+          value={form.steps}
+          onChange={handleChange}
+        />
         <br />
         <br />
         <label>Diets:</label>
-        <input />
+        <input
+          id="diets"
+          name="diets"
+          type="text"
+          value={form.diets}
+          onChange={handleChange}
+        />
         <input type="submit" value="submit" />
       </form>
     </div>

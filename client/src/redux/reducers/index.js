@@ -1,8 +1,9 @@
-import { GET_RECIPES, ALPHABETIC_SORT, SORT_BY_SCORE, FILTER_BY_DIETS, SEARCH_BAR, ADD_NEW_RECIPE} from "../actions";
+import { GET_RECIPES, ALPHABETIC_SORT, SORT_BY_SCORE, FILTER_BY_DIETS, SEARCH_BAR,RECIPE_DETAILS, ADD_NEW_RECIPE} from "../actions";
 
 const initialState = {
   recipes: [],
   allRecipes: [],
+  recipeDetails: []
 };
 export default function reducer(state = initialState, action) {
   console.log(state.allRecipes)
@@ -58,6 +59,11 @@ export default function reducer(state = initialState, action) {
       return{
         ...state,
         recipes: action.payload
+      }
+    case RECIPE_DETAILS:
+      return{
+        ...state,
+        allRecipes: action.payload
       }
     case ADD_NEW_RECIPE:
       return{

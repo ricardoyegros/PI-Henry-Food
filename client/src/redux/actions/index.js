@@ -4,6 +4,7 @@ export const ALPHABETIC_SORT = "ALPHABETIC_SORT";
 export const SORT_BY_SCORE = "SORT_BY_SCORE";
 export const FILTER_BY_DIETS = "FILTER_BY_DIETS";
 export const SEARCH_BAR = "SEARCH_BAR";
+export const RECIPE_DETAILS = "RECIPE_DETAILS";
 export const ADD_NEW_RECIPE = "ADD_NEW_RECIPE";
 //import {axios} from "axios";
 //let n = axios.get("localhost:3001/api/recipes").then(res => res.data)
@@ -51,11 +52,24 @@ export function filterByDiets(payload) {
   };
 }
 
+export function recipesDetails(payload) {
+  return async function (dispatch) {
+    try {
+      let recipeId = await axios.get(`http://localhost:3001/api/recipes/${payload}`);
+      return dispatch({ type: RECIPE_DETAILS, payload: recipeId.data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
 export function addNewRecipe(payload) {
   return function (dispatch) {
     let newRecipe = axios
       .get(`http://localhost:3001/api/recipes/`, payload)
-      .then((newRecipe) => dispatch({ type: ADD_NEW_RECIPE , payload: newRecipe.data }))
+      .then((newRecipe) =>
+        dispatch({ type: ADD_NEW_RECIPE, payload: newRecipe.data })
+      )
       .catch((error) => console.log(error));
   };
 }

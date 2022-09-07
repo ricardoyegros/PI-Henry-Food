@@ -121,7 +121,7 @@ router.get("/", async (req, res, next) => {
 // - [ ] Nivel de "comida saludable" (health score)
 // - [ ] Paso a paso
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", async (req, res, next) => {
   let { id } = req.params;
   try {
     if (
@@ -178,7 +178,7 @@ router.get("/:id", async (req, res) => {
               : elemento.diets.map((nd) => nd),
             dishTypes: elemento.dishTypes?.map((types) => types),
             summary: elemento.summary.replace(/<[^>]+>/g, ""),
-            steps: elemento.instructions,
+            steps: elemento.analyzedInstructions[0]?.steps.map(e =>e.step).join(),
           };
         });
         res.json(resultFromApi);
