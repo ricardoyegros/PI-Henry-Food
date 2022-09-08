@@ -1,12 +1,11 @@
-import { GET_RECIPES, ALPHABETIC_SORT, SORT_BY_SCORE, FILTER_BY_DIETS, SEARCH_BAR,RECIPE_DETAILS, ADD_NEW_RECIPE} from "../actions";
+import { GET_RECIPES, ALPHABETIC_SORT, SORT_BY_SCORE, FILTER_BY_DIETS, SEARCH_BAR,RECIPE_DETAILS, GET_ALL_DIETS} from "../actions";
 
 const initialState = {
   recipes: [],
   allRecipes: [],
-  recipeDetails: []
+  allDiets: []
 };
 export default function reducer(state = initialState, action) {
-  console.log(state.allRecipes)
   switch (action.type) {
     case GET_RECIPES:
       return {
@@ -18,13 +17,13 @@ export default function reducer(state = initialState, action) {
       let sortedRecipes =
         action.payload === "a-z"
           ? state.allRecipes.sort(function (a, b) {
-              if (a.name > b.name) return 1;
-              if (a.name < b.name) return -1;
+              if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+              if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
               return 0;
             })
           : state.allRecipes.sort(function (a, b) {
-              if (a.name < b.name) return 1;
-              if (a.name > b.name) return -1;
+              if (a.name.toLowerCase() < b.name.toLowerCase()) return 1;
+              if (a.name.toLowerCase() > b.name.toLowerCase()) return -1;
               return 0;
             });
       return {
@@ -51,6 +50,7 @@ export default function reducer(state = initialState, action) {
     case FILTER_BY_DIETS:
       let dietsFiltered = state.allRecipes
       let resultDietsFiltered = dietsFiltered.filter(el => el.diets.some(e => e.toLowerCase() == action.payload.toLowerCase()))
+      console.log(resultDietsFiltered)
       return {
         ...state,
         recipes: resultDietsFiltered
@@ -65,9 +65,10 @@ export default function reducer(state = initialState, action) {
         ...state,
         allRecipes: action.payload
       }
-    case ADD_NEW_RECIPE:
-      return{
-        ...state
+    case GET_ALL_DIETS:
+      return {
+        ...state,
+        allDiets: action.payload
       }
     default:
       return state;

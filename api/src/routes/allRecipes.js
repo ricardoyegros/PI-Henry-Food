@@ -108,7 +108,22 @@ router.get("/", async (req, res, next) => {
         })
       );
       let allRecipesFromDb = await Recipe.findAll({ include: Diet });
-      let finalRecipes = array.concat(allRecipesFromDb) /*[...array , ...allRecipesFromDb];*/
+      console.log(allRecipesFromDb)
+      let resultFromDb   
+      if(allRecipesFromDb.length > 0){
+          resultFromDb = allRecipesFromDb.map((elemento) => {
+            return {
+              id: elemento.id,
+              name: elemento.name,
+              summary: elemento.summary.replace(/<[^>]+>/g, ""),
+              healthScore: elemento.healthScore,
+              image: elemento.image,
+              steps: elemento.steps,
+              diets: elemento.diets.map(d => d.name)
+            };
+          });
+        }
+      let finalRecipes = array.concat(resultFromDb) 
       res.json(finalRecipes);
     }
   } catch (error) {
@@ -124,6 +139,7 @@ router.get("/", async (req, res, next) => {
 router.get("/:id", async (req, res, next) => {
   let { id } = req.params;
   try {
+    let Diets = [];
     if (
       /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(
         id
@@ -144,9 +160,9 @@ router.get("/:id", async (req, res, next) => {
             healthScore: elemento.healthScore,
             image: elemento.image,
             steps: elemento.steps,
-            diets: elemento.vegetarian
-              ? [...elemento.diets , "vegetarian"]
-              : elemento.diets.map((nd) => nd),
+            diets: elemento.diets.map(d => d.name)
+              // ? [...elemento.diets ," ", "vegetarian"]
+              // : elemento.diets.map((nd) => nd),
           };
         });
         //console.log(result)

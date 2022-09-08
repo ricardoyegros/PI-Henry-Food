@@ -1,5 +1,8 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector} from "react-redux";
+import {getAllDiets, getRecipies, addNewRecipetoReducer} from "../redux/actions"
+import {Link} from "react-router-dom"
 
 // __Ruta de creación de recetas__: debe contener
 
@@ -16,36 +19,95 @@ import { useState } from "react";
 //  Por ejemplo: Que el nombre de la receta no pueda contener símbolos,
 //  que el health score no pueda exceder determinado valor, etc.
 
-// function validatorFunction(something) {
-//   let someError = {};
-//   if (!something.name ) someError.name = "Dont forget complete the recipe name";
-//   if (!something.summary)
-//     someError.summary = "Dont forget complete the summary section";
-//   if (
-//     !typeof something.healthScore === "Number" ||
-//     !something.healthScore >= 0 ||
-//     !something.healthScore <= 100
-//   )
-//     someError.healthScore =
-//       "Dont forget the healthScore must be a 'Number' beetween 0 - 100";
-// }
-
 export default function AddNewRecipe() {
-  let [form, setForm] = useState({});
+  let [form, setForm] = useState({
+    diets: []
+  });
+  let [error, setError] = useState({});
+  let dispatch = useDispatch();
+  let typeDiets = useSelector(state => state.allDiets)
+  
+  useEffect(() => {
+    dispatch(getAllDiets());
+}, [dispatch]);
+
+  function errorValidator(form) {
+    let errorsToShow = {};
+    if (!form.name) {
+      errorsToShow.name = "Please complete the input 'Name' to continue";
+    } else {
+      let regexValidator = /^([a-zA-Z]+)(\s[a-zA-Z]+)*$/;
+      if (!regexValidator.test(form.name)) {
+        errorsToShow.name =
+          "The input 'Name' dont be a number o especial character";
+      }
+    }
+    if (!form.summary) {
+      errorsToShow.summary = "Please complete the input 'Summary' to continue";
+    }
+    if (form.healthScore) {
+      let regexValidatorToHealthScore = /^([0-9])*$/;
+      if (
+        !regexValidatorToHealthScore.test(form.healthScore) ||
+        form.healthScore < 0 ||
+        form.healthScore > 100
+      ) {
+        errorsToShow.healthScore =
+          "The input 'Healthscore' must be a number beetween 0-100";
+          alert("The input 'Healthscore' must be a number beetween 0-100")
+      }
+    }
+    if(form.image){
+      let regexImage = /(.jpg|.jpeg|.png|.gif)$/i
+      if(!regexImage.test(form.image)){
+        errorsToShow.image =
+        "the file extension must be .jpg|.jpeg|.png|.gif"
+        alert("the file extension must be .jpg|.jpeg|.png|.gif")
+      }
+    }
+    return errorsToShow;
+  }
 
   function handleChange(e) {
     setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+    setError(
+      errorValidator({
         ...form,
-        [e.target.name]: e.target.value})}
-  //     
-  //     let newStateToValidate = validatorFunction(newState)
-  //     setErrors(newStateToValidate)
-  //     return newState
-  //   });
-  function handleSubmit(e) {
-    e.preventDefault();
-    alert("El formulario se ha enviado")
+        [e.target.name]: e.target.value,
+      })
+    );
   }
+
+  function handleChecked(e) {
+    e.preventDefault();
+    if(form.diets.indexOf(e.target.value) !== -1){
+      setForm((form) => ({
+        ...form,
+        diets: form.diets.splice(form.diets.indexOf(e.target.value),1)
+      }))
+    }else {
+      setForm((form) => ({
+        ...form,
+        diets: [...form.diets, e.target.value]
+      }))
+    }
+  }
+
+  function handleSubmit(e) {
+    console.log(form)
+    e.preventDefault();
+    if (error.name || error.summary) {
+      alert("The inputs 'name' && 'summary' dont must be incomplete");
+    } else {
+      dispatch(addNewRecipetoReducer(form));
+      dispatch(getRecipies())
+      alert("El formulario se ha enviado");
+    }
+  }
+
   return (
     <div>
       <h1>Create and Share Your Own Recipe</h1>
@@ -58,6 +120,7 @@ export default function AddNewRecipe() {
           value={form.name}
           onChange={handleChange}
         />
+        {error.name ? <p>{error.name}</p> : ""}
         <br />
         <br />
         <label>Summary: </label>
@@ -68,18 +131,18 @@ export default function AddNewRecipe() {
           value={form.summary}
           onChange={handleChange}
         />
+        {error.summary ? <p>{error.summary}</p> : ""}
         <br />
         <br />
         <label>Healthscore: </label>
         <input
           id="healthScore"
           name="healthScore"
-          type="number"
-          min="0"
-          max="100"
+          type="text"
           value={form.healthScore}
           onChange={handleChange}
         />
+        {error.healthScore ? <p>{error.healthScore}</p> : ""}
         <br />
         <br />
         <label>Steps:</label>
@@ -93,15 +156,29 @@ export default function AddNewRecipe() {
         <br />
         <br />
         <label>Diets:</label>
-        <input
-          id="diets"
-          name="diets"
-          type="text"
-          value={form.diets}
-          onChange={handleChange}
-        />
+        {typeDiets.map(el=>{
+          return(
+            <div>
+              <p>{el.name}</p>
+              <input type="checkbox" name={el.name} value={el.name} onChange={e=> handleChecked(e)}/>
+            </div>
+          )
+        })}
+        <p><b>{form.diets.toString()}</b></p>
+        <br />
+        <br />
+        <label>Upload your image here : </label>
+        <input type="file" name="image" value={form.image} onChange={handleChange}/>
+        {error.image ? <p><b>{error.image}</b></p> : ""}
+        <br />
+        <br />
         <input type="submit" value="submit" />
       </form>
+      <br />
+        <br />
+      <Link to="/home-page">
+        <button>Go Back to Home=Page</button>
+      </Link>
     </div>
   );
 }

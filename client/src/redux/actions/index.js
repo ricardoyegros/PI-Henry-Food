@@ -6,6 +6,7 @@ export const FILTER_BY_DIETS = "FILTER_BY_DIETS";
 export const SEARCH_BAR = "SEARCH_BAR";
 export const RECIPE_DETAILS = "RECIPE_DETAILS";
 export const ADD_NEW_RECIPE = "ADD_NEW_RECIPE";
+export const GET_ALL_DIETS = "GET_ALL_DIETS";
 //import {axios} from "axios";
 //let n = axios.get("localhost:3001/api/recipes").then(res => res.data)
 
@@ -23,7 +24,7 @@ export function getRecipies() {
   };
 }
 
-export default function findFromSearchBar(payload) {
+export function findFromSearchBar(payload) {
   return function (dispatch) {
     let recipesBySearchBar = axios
       .get(`http://localhost:3001/api/recipes/?name=${payload}`)
@@ -63,13 +64,18 @@ export function recipesDetails(payload) {
   };
 }
 
-export function addNewRecipe(payload) {
+export function addNewRecipetoReducer(payload) {
+  console.log(payload)
   return function (dispatch) {
     let newRecipe = axios
-      .get(`http://localhost:3001/api/recipes/`, payload)
-      .then((newRecipe) =>
-        dispatch({ type: ADD_NEW_RECIPE, payload: newRecipe.data })
-      )
+      .post(`http://localhost:3001/api/recipes/`, payload)
       .catch((error) => console.log(error));
   };
+}
+
+export function getAllDiets (payload) {
+  return async function (dispatch) {
+    let allDiets = await axios.get("http://localhost:3001/api/diets")
+    return dispatch({type: GET_ALL_DIETS, payload: allDiets.data})
+  }
 }

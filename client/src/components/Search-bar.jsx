@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import findFromSearchBar from "../redux/actions/";
+import {findFromSearchBar} from "../redux/actions/";
 import { useDispatch } from "react-redux";
 
 export default function SearchBar() {

@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { getRecipies, alphabeticSort, orderByScore, filterByDiets } from "../redux/actions/index";
+import { getRecipies, alphabeticSort, orderByScore, filterByDiets, getAllDiets } from "../redux/actions/index";
 import RecipeCard from "./Recipe-Card";
 import SearchBar from "./Search-bar";
 import { Link } from "react-router-dom";
@@ -17,13 +17,14 @@ import { Link } from "react-router-dom";
 
 export default function HomePage() {
   let allRecipes = useSelector((state) => state.recipes);
+  let allDiets = useSelector((state) => state.allDiets)
   let dispatch = useDispatch();
   useEffect(() => {
     dispatch(getRecipies());
+    dispatch(getAllDiets() )
   }, [dispatch]);
-
   const [order, setOrder] = useState("");
-
+  
   function handleSortAlphabetical(e) {
     e.preventDefault();
     dispatch(alphabeticSort(e.target.value));
@@ -36,10 +37,11 @@ export default function HomePage() {
 }
 
 function handleTypesOfDiets(e) {
-    e.preventDefault();
+  e.preventDefault();
     dispatch(filterByDiets(e.target.value));
-}
+  }
 
+console.log(allRecipes)
   return (
     <div>
       <SearchBar />
@@ -57,8 +59,8 @@ function handleTypesOfDiets(e) {
           <option value="z-a">Z to A</option>
         </select>
         <select
-          className="scoreSelection"
-          name="score"
+          className="healthscoreSelection"
+          name="healthscore"
           onChange={(e) => handleScoreSort(e)}
         >
           <option disabled selected>
@@ -70,7 +72,8 @@ function handleTypesOfDiets(e) {
         <label className="filterByDiets">Filter By Diets: </label>
         <select className="select-diets" name="diets" onChange={e => handleTypesOfDiets(e)}>
             <option disabled selected>Select a Type of Diet</option>
-            <option value="gluten free">Gluten Free</option>
+            {allDiets?.map((diet, i) => <option key={i} value={diet.name}>{diet.name}</option>)}
+            {/* <option value="gluten free">Gluten Free</option>
             <option value="ketogenic">Ketogenic</option>
             <option value="vegetarian">Vegetarian</option>
             <option value="lacto vegetarian">Lacto Vegetarian</option>
@@ -82,7 +85,7 @@ function handleTypesOfDiets(e) {
             <option value="primal">Primal</option>
             <option value="low fodmap">Low Fodmap</option>
             <option value="whole 30">Whole 30</option>
-            <option value="dairy free">Dairy Free</option>
+            <option value="dairy free">Dairy Free</option> */}
         </select>
       </div>
       <div>
@@ -99,9 +102,9 @@ function handleTypesOfDiets(e) {
                 name={recipe.name ||recipe.title}
                 image={recipe.image}
                 healthScore={recipe.healthScore}
-                dishTypes={recipe.dishTypes}
+                dishTypes={recipe.dishTypes|| ""}
                 diets={recipe.diets}
-              />
+                />
             </Link>
             ))
           : "No se encontraron recetas para mostrar"}
