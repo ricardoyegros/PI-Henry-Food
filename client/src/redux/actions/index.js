@@ -65,7 +65,6 @@ export function recipesDetails(payload) {
 }
 
 export function addNewRecipetoReducer(payload) {
-  console.log(payload)
   return function (dispatch) {
     let newRecipe = axios
       .post(`http://localhost:3001/api/recipes/`, payload)

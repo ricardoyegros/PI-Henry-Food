@@ -27,43 +27,6 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-// router.get("/", async (req, res, next) => {
-//     let { name } = req.query;
-//     if(name){
-//         try {
-//             let recipeListDb = await Recipe.findAll({
-//                 where: {
-//               name:{
-//                [Op.iLike] : "%" + name + "%"
-//             }
-//             },
-//           });
-//           let recipeListApi = await axios.get(
-//             `${URL_SPOON}?apiKey=${YOUR_API_KEY}&addRecipeInformation=true`
-//             ); // .then(data => data.results.filter(el => el.title.toLowerCase().includes(name.toLowerCase()));
-//             let recipeName = await recipeListApi.data.results.filter((el) =>
-//             el.title.toLowerCase().includes(name.toLowerCase())
-//           );
-//           let getAllRecipes = [...recipeListDb, ...recipeName];
-//           if (getAllRecipes.length > 0) {
-//             res.json(getAllRecipes);
-//           } else {
-//             res.status(404).send("No se encontraron recetas con ese nombre");
-//           }
-//           res.json(getAllRecipes);
-//           res.json(getAllRecipes);
-//         } catch (error) {
-//           next(error);
-//       }
-//     }else{
-//         let allRecipesFromApi = await axios.get(
-//             `${URL_SPOON}?apiKey=${YOUR_API_KEY}&addRecipeInformation=true`).then(el => el.data.results);
-//         let allRecipesFromDb = await Recipe.findAll();
-//         let finalRecipes = [...allRecipesFromApi, ...allRecipesFromDb];
-//         res.json(finalRecipes);
-//     }
-// });
-
 router.get("/", async (req, res, next) => {
   let { name } = req.query;
   try {
@@ -108,7 +71,6 @@ router.get("/", async (req, res, next) => {
         })
       );
       let allRecipesFromDb = await Recipe.findAll({ include: Diet });
-      console.log(allRecipesFromDb)
       let resultFromDb   
       if(allRecipesFromDb.length > 0){
           resultFromDb = allRecipesFromDb.map((elemento) => {
@@ -161,11 +123,8 @@ router.get("/:id", async (req, res, next) => {
             image: elemento.image,
             steps: elemento.steps,
             diets: elemento.diets.map(d => d.name)
-              // ? [...elemento.diets ," ", "vegetarian"]
-              // : elemento.diets.map((nd) => nd),
           };
         });
-        //console.log(result)
         res.json(result);
       } else {
         res.status(404).send("No se encontraron recetas con ese id");
@@ -178,7 +137,6 @@ router.get("/:id", async (req, res, next) => {
         (el) => el.id == id
       );
       if (idFromApi.length > 0) {
-        //console.log(idFromApi);
         let resultFromApi = idFromApi.map((elemento) => {
           return {
             name: elemento.title,

@@ -97,7 +97,7 @@ export default function AddNewRecipe() {
   }
 
   function handleSubmit(e) {
-    console.log(form)
+    //console.log(form)
     e.preventDefault();
     if (error.name || error.summary) {
       alert("The inputs 'name' && 'summary' dont must be incomplete");

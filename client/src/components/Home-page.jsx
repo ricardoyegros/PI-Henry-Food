@@ -5,6 +5,7 @@ import { getRecipies, alphabeticSort, orderByScore, filterByDiets, getAllDiets }
 import RecipeCard from "./Recipe-Card";
 import SearchBar from "./Search-bar";
 import { Link } from "react-router-dom";
+import PagedComponent from "./Paged-component";
 
 // - [ ] Input de búsqueda para encontrar recetas por nombre
 // - [ ] Área donde se verá el listado de recetas. Deberá mostrar su:
@@ -19,27 +20,41 @@ export default function HomePage() {
   let allRecipes = useSelector((state) => state.recipes);
   let allDiets = useSelector((state) => state.allDiets)
   let dispatch = useDispatch();
+  const [order, setOrder] = useState("");
+  const [page, setPage] = useState(1);
+  const [recipesPerPage, setRecipesPerPage] = useState(9);
+
+  let limitToshow = page * recipesPerPage;
+  let firstToShow = limitToshow - recipesPerPage;
+  let recipesToShow = allRecipes.slice(firstToShow, limitToshow);
+  
   useEffect(() => {
     dispatch(getRecipies());
-    dispatch(getAllDiets() )
+    dispatch(getAllDiets())
   }, [dispatch]);
-  const [order, setOrder] = useState("");
   
   function handleSortAlphabetical(e) {
     e.preventDefault();
     dispatch(alphabeticSort(e.target.value));
     setOrder(e.target.value);
+    setPage(1)
   }
   function handleScoreSort(e) {
     e.preventDefault();                
     dispatch(orderByScore(e.target.value));
     setOrder(e.target.value);
+    setPage(1)
 }
 
 function handleTypesOfDiets(e) {
   e.preventDefault();
     dispatch(filterByDiets(e.target.value));
+    setPage(1)
   }
+
+function pagedFunction (numberOfPage) {
+  setPage(numberOfPage)
+}
 
 console.log(allRecipes)
   return (
@@ -73,19 +88,6 @@ console.log(allRecipes)
         <select className="select-diets" name="diets" onChange={e => handleTypesOfDiets(e)}>
             <option disabled selected>Select a Type of Diet</option>
             {allDiets?.map((diet, i) => <option key={i} value={diet.name}>{diet.name}</option>)}
-            {/* <option value="gluten free">Gluten Free</option>
-            <option value="ketogenic">Ketogenic</option>
-            <option value="vegetarian">Vegetarian</option>
-            <option value="lacto vegetarian">Lacto Vegetarian</option>
-            <option value="ovo vegetarian">Ovo Vegetarian</option>
-            <option value="lacto ovo vegetarian">Lacto Ovo Vegetarian</option>
-            <option value="vegan">Vegan</option>
-            <option value="pescetarian">Pescetarian</option>
-            <option value="paleolithic">Paleolithic</option>
-            <option value="primal">Primal</option>
-            <option value="low fodmap">Low Fodmap</option>
-            <option value="whole 30">Whole 30</option>
-            <option value="dairy free">Dairy Free</option> */}
         </select>
       </div>
       <div>
@@ -93,12 +95,13 @@ console.log(allRecipes)
           <button className="button-to-add-new-recipe">Add New Recipe!</button>
         </Link>
       </div>
+      <PagedComponent recipesPerPage={recipesPerPage} allRecipes={allRecipes.length} pagedFunction={pagedFunction}/>
       <div>
         {allRecipes.length > 0
-          ? allRecipes.map((recipe, i) => (
+          ? recipesToShow.map((recipe, i) => (
             <Link to={`/home-page/${recipe.id}`} key={i}>
               <RecipeCard
-                id={recipe.idApi ? recipe.idApi : recipe.id}
+                id={recipe.id}
                 name={recipe.name ||recipe.title}
                 image={recipe.image}
                 healthScore={recipe.healthScore}
@@ -109,6 +112,7 @@ console.log(allRecipes)
             ))
           : "No se encontraron recetas para mostrar"}
       </div>
+      <PagedComponent recipesPerPage={recipesPerPage} allRecipes={allRecipes.length} pagedFunction={pagedFunction}/>
     </div>
   );
 }

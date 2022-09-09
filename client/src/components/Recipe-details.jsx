@@ -13,7 +13,6 @@ export default function RecipeDetails(recipe) {
   useEffect(() => {
     dispatch(recipesDetails(idRecipe));
   }, [dispatch, idRecipe]);
-  console.log(recipeToDetail);
   return (
     <div>
       <h1>{recipeToDetail[0].name}</h1>
