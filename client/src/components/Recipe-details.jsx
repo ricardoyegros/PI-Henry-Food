@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { recipesDetails } from "../redux/actions";
 import { Link } from "react-router-dom";
+import styles from "../components/styles/recipe-detail/details.css"
 
 export default function RecipeDetails(recipe) {
   let dispatch = useDispatch();
@@ -14,9 +15,10 @@ export default function RecipeDetails(recipe) {
     dispatch(recipesDetails(idRecipe));
   }, [dispatch, idRecipe]);
   return (
-    <div>
+    <div className="details-div">
+      <div className="details-recipe-card">
       <h1>{recipeToDetail[0].name}</h1>
-      <img src={recipeToDetail[0].image} />
+      <img className="image-details" alt="No se pudo cargar la imagen" src={recipeToDetail[0].image} />
       <h4>
         {
           <p>
@@ -32,8 +34,9 @@ export default function RecipeDetails(recipe) {
       <p>
         <b>Steps:</b> {recipeToDetail[0].steps}
       </p>
+      </div>
       <Link to="/home-page">
-        <button>Go Back to Home=Page</button>
+        <button className="button-to-home">Go Back to Home=Page</button>
       </Link>
     </div>
   );

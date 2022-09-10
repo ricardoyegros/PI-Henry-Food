@@ -40,7 +40,7 @@ router.get("/", async (req, res, next) => {
         include: Diet,
       });
       let recipeListApi = await axios.get(
-        `${URL_SPOON}?apiKey=${YOUR_API_KEY}&addRecipeInformation=true`
+        `${URL_SPOON}?number=100&apiKey=${YOUR_API_KEY}&addRecipeInformation=true`
       ); // .then(data => data.results.filter(el => el.title.toLowerCase().includes(name.toLowerCase()));
       let recipeName = await recipeListApi.data.results.filter((el) =>
         el.title.toLowerCase().includes(name.toLowerCase())
@@ -131,7 +131,7 @@ router.get("/:id", async (req, res, next) => {
       }
     } else {
       let infoFromApi = await axios.get(
-        `${URL_SPOON}?apiKey=${YOUR_API_KEY}&addRecipeInformation=true`
+        `${URL_SPOON}?number=100&apiKey=${YOUR_API_KEY}&addRecipeInformation=true`
       );
       let idFromApi = await infoFromApi.data.results.filter(
         (el) => el.id == id

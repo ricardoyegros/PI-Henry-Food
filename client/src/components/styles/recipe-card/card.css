@@ -1,0 +1,70 @@
+.recipe-card {
+    /* border: solid black;
+    margin: 1rem 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; */
+    display: flex;
+    flex-direction: column;
+margin: 30px ;
+padding: 10px;
+align-items: center;
+justify-content: space-around;
+box-shadow: rgba(0, 0, 0, 0.85) 20px 25px 40px -10px;
+border-radius: 30px;
+text-align: center;
+background-color:  #E5E8E8 ;
+width: 22rem;
+height: 35rem;
+/* width: 350px;
+height: 600px; */
+transition: transform;
+box-sizing: border-box
+}
+
+.recipe-card:hover{
+    transform: scale(1.1);
+}
+
+.card-name {
+    /* border: solid red ; */
+    padding: 0.2rem;
+    padding-bottom: 1rem;
+    font-size: 1rem
+}
+ img{
+    object-fit: cover;
+ }
+ .card-img{
+    /* border: solid blue; 
+     width: 15rem;
+    height: 12rem;
+    padding: 1rem;
+    padding: 0.2rem; */
+    /* width: 250px;
+    height: 250px; */
+    width: 250px;
+    height: 250px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.65) 20px 25px 20px -18px;
+    border-radius: 10px;
+
+} 
+.card-score{
+    /* border: solid green; */
+    padding: 0.2rem;
+    font-size: 1rem
+
+}
+.card-diets{
+    /* border: solid palevioletred; */
+    font-size: 1rem;
+}
+.card-dish-types{
+    /* border: solid orangered; */
+    padding: 0.2rem;
+    font-size: 1rem
+    
+}

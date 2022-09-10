@@ -9,7 +9,7 @@ import AddNewRecipe from "./components/Add-New-Recipe";
 function App() {
   return (
       <div className="App">
-        <h1>Henry Food</h1>
+        {/* <h1>Henry Food</h1> */}
         <Switch>
           <Route exact path="/" component={LandingPage}/>
           <Route exact path="/home-page" component={HomePage}/>

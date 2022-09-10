@@ -6,6 +6,8 @@ import RecipeCard from "./Recipe-Card";
 import SearchBar from "./Search-bar";
 import { Link } from "react-router-dom";
 import PagedComponent from "./Paged-component";
+import styles from "../components/styles/home/home-page.css"
+import logo from "../assets/logo.png"
 
 // - [ ] Input de búsqueda para encontrar recetas por nombre
 // - [ ] Área donde se verá el listado de recetas. Deberá mostrar su:
@@ -59,7 +61,9 @@ function pagedFunction (numberOfPage) {
 console.log(allRecipes)
   return (
     <div>
-      <SearchBar />
+      <nav className="nav-bar">
+      <img className="logo-home-page" src={logo} />
+      <SearchBar/>
       <div className="select">
         <label className="filters">Order:</label>
         <select
@@ -74,7 +78,7 @@ console.log(allRecipes)
           <option value="z-a">Z to A</option>
         </select>
         <select
-          className="healthscoreSelection"
+          className="selectFilter"
           name="healthscore"
           onChange={(e) => handleScoreSort(e)}
         >
@@ -95,11 +99,13 @@ console.log(allRecipes)
           <button className="button-to-add-new-recipe">Add New Recipe!</button>
         </Link>
       </div>
+      </nav>
+      <div className="home">
       <PagedComponent recipesPerPage={recipesPerPage} allRecipes={allRecipes.length} pagedFunction={pagedFunction}/>
-      <div>
+      <div className="all-recipes-maped">
         {allRecipes.length > 0
           ? recipesToShow.map((recipe, i) => (
-            <Link to={`/home-page/${recipe.id}`} key={i}>
+            <Link to={`/home-page/${recipe.id}`} key={i} >
               <RecipeCard
                 id={recipe.id}
                 name={recipe.name ||recipe.title}
@@ -112,7 +118,8 @@ console.log(allRecipes)
             ))
           : "No se encontraron recetas para mostrar"}
       </div>
-      <PagedComponent recipesPerPage={recipesPerPage} allRecipes={allRecipes.length} pagedFunction={pagedFunction}/>
+      <PagedComponent recipesPerPage={recipesPerPage} allRecipes={allRecipes.length} pagedFunction={pagedFunction} />
+      </div>
     </div>
   );
 }

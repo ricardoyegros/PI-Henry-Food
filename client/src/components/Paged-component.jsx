@@ -8,9 +8,9 @@ export default function PagedComponent ({recipesPerPage, allRecipes, pagedFuncti
     }
 
     return (
-        <div>
+        <div className="paged-container">
             {totalPages?.map(pages => (
-                <button onClick={()=>pagedFunction(pages)} >{pages} </button>
+                <button className="paged-button" onClick={()=>pagedFunction(pages)} >{pages} </button>
             ))}
         </div>
     )

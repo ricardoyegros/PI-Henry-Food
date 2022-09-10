@@ -1,0 +1,34 @@
+.searchBarInput{
+    font-size: 20px;
+    box-sizing: border-box;
+    border-radius: 25px 0 0 25px;
+    padding: 0.3rem;
+    max-width: 100%;
+    border: solid rgb(171, 70, 70);
+}
+
+.searchBarInput::placeholder{
+    color: #C0392B ;
+}
+
+.searchBarInput:hover{
+    transform: scale(1.02);
+    cursor: pointer;
+}
+
+.searchBarButton{
+    margin: 0.2rem;
+    font-size: 20px;
+    box-sizing: border-box;
+    border-radius: 0 25px 25px 0;
+    padding: 0.3rem;
+    max-width: 100%;
+    border: solid rgb(171, 70, 70);
+    background-color: #C0392B;
+    color: #fff;
+}
+
+.searchBarButton:hover{
+    transform: scale(1.02);
+    cursor: pointer;
+}

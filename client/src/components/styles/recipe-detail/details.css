@@ -1,0 +1,24 @@
+.details-div{
+    background-color: #E5E8E8;
+}
+.details-recipe-card{
+    background-color: #C0392B;
+    display: grid;
+    margin: 50px ;
+padding: 10px;
+align-items: center;
+justify-content: center;
+box-shadow: rgba(0, 0, 0, 0.85) 20px 25px 40px -10px;
+border-radius: 30px;
+text-align: center;
+width: 87rem;
+height: 70rem;
+}
+
+.image-details{
+    border-radius: 30px;
+}
+
+.button-to-home{
+    background-color: #C0392B;
+}
