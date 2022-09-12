@@ -7,6 +7,7 @@ export const SEARCH_BAR = "SEARCH_BAR";
 export const RECIPE_DETAILS = "RECIPE_DETAILS";
 export const ADD_NEW_RECIPE = "ADD_NEW_RECIPE";
 export const GET_ALL_DIETS = "GET_ALL_DIETS";
+export const CLEAR = "CLEAR";
 //import {axios} from "axios";
 //let n = axios.get("localhost:3001/api/recipes").then(res => res.data)
 
@@ -77,4 +78,8 @@ export function getAllDiets (payload) {
     let allDiets = await axios.get("http://localhost:3001/api/diets")
     return dispatch({type: GET_ALL_DIETS, payload: allDiets.data})
   }
+}
+
+export function unMount () {
+  return {type: CLEAR}
 }

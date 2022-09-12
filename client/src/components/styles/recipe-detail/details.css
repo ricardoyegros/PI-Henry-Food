@@ -1,24 +1,73 @@
 .details-div{
-    background-color: #E5E8E8;
+    background-color: #C0392B;
+    padding-top: 3.5rem;
+    padding-left: 3.5rem;
+    padding-bottom: 3.5rem;
+}
+
+.nav-bar-detail{
+    padding-bottom: 3.5rem;
+    margin-right: 12vh;
 }
 .details-recipe-card{
-    background-color: #C0392B;
-    display: grid;
-    margin: 50px ;
+    background-color: #E5E8E8;
+    display: flex;
+    flex-direction: column;
+    /* margin: 50px ; */
 padding: 10px;
 align-items: center;
 justify-content: center;
 box-shadow: rgba(0, 0, 0, 0.85) 20px 25px 40px -10px;
-border-radius: 30px;
+border-radius: 10px;
 text-align: center;
 width: 87rem;
 height: 70rem;
+color: #C0392B;
+box-sizing: border-box;
+justify-content: space-evenly;
 }
 
 .image-details{
+    width: 28vw;
+    border-radius: 5px;
+    position: relative;
+    box-shadow: rgba(0, 0, 0, 0.85) 20px 20px 20px -10px;
+}
+
+.button-container{
+    padding-top: 3.5rem;
+}
+
+.logo-detail{
+    padding: 0px;
+    position: relative;
+    max-width: 110px;
+    border-style: outset ;
+    border-color: red;
     border-radius: 30px;
+    box-shadow: rgba(0, 0, 0, 0.85) 15px 15px 30px -10px;
+}
+.logo-detail:hover{
+    transform: scale(1.02);
+    cursor: pointer;
 }
 
 .button-to-home{
-    background-color: #C0392B;
+    background: #fff;
+    color: #C0392B;
+    border-radius: 25px;
+    box-shadow: rgba(0, 0, 0, 0.85) 20px 20px 20px -10px;
+    font-size: 1.5rem;
+    font-style: italic;
+    font-weight: bold;
+    letter-spacing: 1px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    margin-right: 12vh;
+    width: 20rem;
+    height: 3rem;
 }
+
+.button-to-home:hover{
+    transform: scale(1.02);
+    cursor: pointer;}

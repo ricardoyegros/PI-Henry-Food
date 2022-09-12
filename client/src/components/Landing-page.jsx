@@ -9,7 +9,9 @@ export default function LandingPage () {
     return (
         <div className="landing-page">
             <div className="nav">
+            <Link to="/home-page">
             <img className="logo-landing" src={logo} />
+            </Link>
             <Link to="/home-page" id="link-to-home-page">
                 <button className="landing-page-button">Lets Go Cook!</button>
             </Link>

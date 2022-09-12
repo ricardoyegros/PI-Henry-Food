@@ -1,5 +1,3 @@
-
-
 * {
     margin:0; padding:0;
 }
@@ -18,16 +16,6 @@
 }
 
 .nav-bar{
-    /* display: flex;
-    align-items: center;
-    justify-content: space-around;
-    padding: 2rem; */
-    /* height: 12vh;
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    background-color: #E5E8E8; */
     position: absolute;
     top: 0;
     left: 0;
@@ -54,7 +42,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 5vh;
 }
 
 .paged-button{
@@ -85,9 +74,27 @@
     max-width: 100%;
     border: solid rgb(171, 70, 70);
     color: #C0392B;
+    margin-left: 10px;
+}
+
+.selectFilter2{
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 20px;
+    box-sizing: border-box;
+    border-radius: 25px;
+    padding: 0.3rem;
+    max-width: 100%;
+    border: solid rgb(171, 70, 70);
+    color: #C0392B;
 }
 
 .selectFilter:hover{
+    transform: scale(1.02);
+    cursor: pointer;
+}
+
+.selectFilter2:hover{
     transform: scale(1.02);
     cursor: pointer;
 }
@@ -112,7 +119,7 @@
     font-size: 20px;
     box-sizing: border-box;
     border-radius: 25px;
-    padding: 0.3rem;
+    padding: 0.4rem;
     max-width: 100%;
     /* border: solid rgb(171, 70, 70); */
     box-shadow: rgba(0, 0, 0, 0.85) 20px 20px 20px -12px;

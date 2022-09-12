@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import PagedComponent from "./Paged-component";
 import styles from "../components/styles/home/home-page.css"
 import logo from "../assets/logo.png"
+import Loader from "./Loader";
 
 // - [ ] Input de búsqueda para encontrar recetas por nombre
 // - [ ] Área donde se verá el listado de recetas. Deberá mostrar su:
@@ -78,7 +79,7 @@ console.log(allRecipes)
           <option value="z-a">Z to A</option>
         </select>
         <select
-          className="selectFilter"
+          className="selectFilter2"
           name="healthscore"
           onChange={(e) => handleScoreSort(e)}
         >
@@ -91,7 +92,7 @@ console.log(allRecipes)
         <label className="filterByDiets">Filter By Diets: </label>
         <select className="select-diets" name="diets" onChange={e => handleTypesOfDiets(e)}>
             <option disabled selected>Select a Type of Diet</option>
-            {allDiets?.map((diet, i) => <option key={i} value={diet.name}>{diet.name}</option>)}
+            {allDiets?.map((diet, i) => <option key={i} value={diet.name}>{diet.name}</option>)}: <Loader />
         </select>
       </div>
       <div>
@@ -116,7 +117,7 @@ console.log(allRecipes)
                 />
             </Link>
             ))
-          : "No se encontraron recetas para mostrar"}
+          : <Loader/>}
       </div>
       <PagedComponent recipesPerPage={recipesPerPage} allRecipes={allRecipes.length} pagedFunction={pagedFunction} />
       </div>

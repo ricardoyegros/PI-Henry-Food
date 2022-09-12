@@ -4,6 +4,7 @@ import LandingPage from "./components/Landing-page";
 import HomePage from "./components/Home-page";
 import RecipeDetails from "./components/Recipe-details";
 import AddNewRecipe from "./components/Add-New-Recipe";
+import styles from "./components/styles/global.css"
 
 /**/
 function App() {

@@ -39,6 +39,10 @@ box-sizing: border-box;
     box-shadow: rgba(0, 0, 0, 0.85) 15px 15px 30px -10px;
 }
 
+.logo-landing:hover{
+    transform: scale(1.02);
+    cursor: pointer;}
+
 .text-landing-page{
     position: relative sticky;
     padding-left: 29rem;

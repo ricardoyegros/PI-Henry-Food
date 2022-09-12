@@ -1,9 +1,10 @@
-import { GET_RECIPES, ALPHABETIC_SORT, SORT_BY_SCORE, FILTER_BY_DIETS, SEARCH_BAR,RECIPE_DETAILS, GET_ALL_DIETS} from "../actions";
+import { GET_RECIPES, ALPHABETIC_SORT, SORT_BY_SCORE, FILTER_BY_DIETS, SEARCH_BAR,RECIPE_DETAILS, GET_ALL_DIETS, CLEAR} from "../actions";
 
 const initialState = {
   recipes: [],
   allRecipes: [],
-  allDiets: []
+  allDiets: [],
+  recipeDetail: []
 };
 export default function reducer(state = initialState, action) {
   switch (action.type) {
@@ -62,12 +63,17 @@ export default function reducer(state = initialState, action) {
     case RECIPE_DETAILS:
       return{
         ...state,
-        allRecipes: action.payload
+        recipeDetail: action.payload
       }
     case GET_ALL_DIETS:
       return {
         ...state,
         allDiets: action.payload
+      }
+    case CLEAR: 
+      return {
+        ...state,
+        recipeDetail: []
       }
     default:
       return state;
