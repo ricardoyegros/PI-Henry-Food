@@ -63,15 +63,24 @@ export default function AddNewRecipe() {
         alert("The input 'Healthscore' must be a number beetween 0-100");
       }
     }
-    if (form.image) {
-      let regexImage = /(.jpg|.jpeg|.png|.gif)$/i;
+    if (!form.image) {
+      errorsToShow.image = "Please Upload a URL Image"
+    } else {
+      let regexImage = /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/i;
       if (!regexImage.test(form.image)) {
-        errorsToShow.image = "the file extension must be .jpg|.jpeg|.png|.gif";
-        alert("the file extension must be .jpg|.jpeg|.png|.gif");
+        errorsToShow.image = "The image must be a URL";
       }
+    }
+
+    if(!form.steps){
+      errorsToShow.steps = "Please Complete the Steps Input"
+    }
+    if(form.diets.length === 0){
+      errorsToShow.diets = "Please Select Almost One Type Of Diet"
     }
     return errorsToShow;
   }
+
 
   function handleChange(e) {
     setForm({
@@ -102,14 +111,21 @@ export default function AddNewRecipe() {
   }
 
   function handleSubmit(e) {
-    //console.log(form)
     e.preventDefault();
-    if (error.name || error.summary) {
-      alert("The inputs 'name' && 'summary' dont must be incomplete");
+    if (error.name || error.summary || error.healthScore || error.steps || error.image || form.diets.length===0) {
+      alert("Please complete all Inputs");
     } else {
       dispatch(addNewRecipetoReducer(form));
       dispatch(getRecipies());
       alert("El formulario se ha enviado");
+      setForm({
+        name: "",
+        summary: "",
+        healthScore: "",
+        steps: "",
+        diets: [],
+        image: ""
+      })
     }
   }
 
@@ -168,6 +184,7 @@ export default function AddNewRecipe() {
             value={form.steps}
             onChange={handleChange}
           />
+          {error.steps ? <p>{error.steps}</p> : ""}
           </div>
           <label><u><b>Diets:</b></u></label>
           {typeDiets.map((el) => {
@@ -186,10 +203,10 @@ export default function AddNewRecipe() {
           <p>
             <b>{form.diets.toString()}</b>
           </p>
-
+          {!form.diets ? <p><b><u>{error.diets}</u></b></p> : ""}
           <label>Upload your image here : </label>
           <input
-            type="file"
+            type="text"
             name="image"
             value={form.image}
             onChange={handleChange}

@@ -4,7 +4,7 @@ const router = Router();
 const {Diet} = require('../db.js');
 
 router.get( '/', async ( req, res, next ) => {
-    let defaultDietsFromApi = ['gluten free','ketogenic', 'Vegetarian','Lacto-Vegetarian', 'lacto ovo vegetarian', 'vegan', 'pescatarian', 'paleolithic', 'primal', 'fodmap friendly', 'whole 30'];
+    let defaultDietsFromApi = ['gluten free','ketogenic', 'Vegetarian', 'lacto ovo vegetarian', 'vegan', 'pescatarian', 'paleolithic', 'primal', 'fodmap friendly', 'whole 30'];
     try {
         defaultDietsFromApi.forEach(diet => Diet.findOrCreate({
         where: {

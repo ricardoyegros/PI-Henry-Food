@@ -14,11 +14,20 @@ describe('Recipe routes', () => {
   .catch((err) => {
     console.error('Unable to connect to the database:', err);
   }));
-  beforeEach(() => Recipe.sync({ force: true })
-    .then(() => Recipe.create(recipe)));
-  describe('GET /recipes', () => {
-    it('should get 200', () =>
-      agent.get('/recipes').expect(200)
-    );
-  });
+  // beforeEach(() => Recipe.sync({ force: true })
+  //   .then(() => Recipe.create(recipe)));
+  // describe('GET /api/recipes', () => {
+  //   it('should get 200', () =>
+  //     agent.get('/api/recipes').expect(200)
+  //   );
+  // });
 });
+
+describe('/api/recipes', function() {
+  it('GET respond with a status 200', function(){
+    return agent
+      .get('/api/recipes')
+      .expect(function(res){
+      expect(res.status).equal(200)})
+  });
+})

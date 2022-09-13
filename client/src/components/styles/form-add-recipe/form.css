@@ -26,6 +26,16 @@
     box-sizing: border-box;
 }
 
+input{
+    border-radius: 5px;
+    border: solid #b4b4b4;
+}
+
+textarea{
+    border-radius: 5px;
+    border:solid #b4b4b4
+}
+
 .name{
     padding-top: 25px;
 }
@@ -48,6 +58,7 @@
     height: 2.5rem;
     margin-bottom: 2rem;
     margin-top: 5vh;
+    border: solid #C0392B;
 }
 
 .submit-button:hover{

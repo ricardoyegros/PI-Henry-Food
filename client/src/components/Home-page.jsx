@@ -35,7 +35,7 @@ export default function HomePage() {
     dispatch(getRecipies());
     dispatch(getAllDiets())
   }, [dispatch]);
-  
+   
   function handleSortAlphabetical(e) {
     e.preventDefault();
     dispatch(alphabeticSort(e.target.value));
@@ -102,7 +102,6 @@ console.log(allRecipes)
       </div>
       </nav>
       <div className="home">
-      <PagedComponent recipesPerPage={recipesPerPage} allRecipes={allRecipes.length} pagedFunction={pagedFunction}/>
       <div className="all-recipes-maped">
         {allRecipes.length > 0
           ? recipesToShow.map((recipe, i) => (

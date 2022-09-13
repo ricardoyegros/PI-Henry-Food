@@ -48,6 +48,7 @@ export function orderByScore(payload) {
 }
 
 export function filterByDiets(payload) {
+  console.log(payload)
   return {
     type: FILTER_BY_DIETS,
     payload,

@@ -5,6 +5,7 @@ const axios = require("axios");
 const { URL_SPOON, YOUR_API_KEY } = process.env;
 const { Op } = require("sequelize");
 
+
 router.post("/", async (req, res, next) => {
   // res.send('soy el post de recipe') 1
   let { name, summary, healthScore, image, steps, dishTypes, diets } = req.body;
@@ -71,7 +72,7 @@ router.get("/", async (req, res, next) => {
         })
       );
       let allRecipesFromDb = await Recipe.findAll({ include: Diet });
-      let resultFromDb   
+      let resultFromDb 
       if(allRecipesFromDb.length > 0){
           resultFromDb = allRecipesFromDb.map((elemento) => {
             return {
@@ -84,6 +85,8 @@ router.get("/", async (req, res, next) => {
               diets: elemento.diets.map(d => d.name)
             };
           });
+        } else{
+          resultFromDb = [];
         }
       let finalRecipes = array.concat(resultFromDb) 
       res.json(finalRecipes);

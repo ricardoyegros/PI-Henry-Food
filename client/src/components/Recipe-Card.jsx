@@ -1,7 +1,7 @@
 import React from "react";
 import style from "../components/styles/recipe-card/card.css"
 
-export default function RecipeCard ({ id, name, image, diets, healthScore, dishTypes}) {
+export default function RecipeCard ({ name, image, diets, healthScore, dishTypes}) {
     return (
         <div className="recipe-card">
             <h2 className="card-name"><u>{name}</u></h2>

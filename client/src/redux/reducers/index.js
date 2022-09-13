@@ -15,6 +15,7 @@ export default function reducer(state = initialState, action) {
         allRecipes: action.payload,
       };
     case ALPHABETIC_SORT:
+      console.log(state.allRecipes)
       let sortedRecipes =
         action.payload === "a-z"
           ? state.allRecipes.sort(function (a, b) {
@@ -50,7 +51,7 @@ export default function reducer(state = initialState, action) {
       };
     case FILTER_BY_DIETS:
       let dietsFiltered = state.allRecipes
-      let resultDietsFiltered = dietsFiltered.filter(el => el.diets.some(e => e.toLowerCase() == action.payload.toLowerCase()))
+      let resultDietsFiltered = dietsFiltered?.filter(el => el.diets?.some(e => e.toLowerCase() == action.payload.toLowerCase()))
       return {
         ...state,
         recipes: resultDietsFiltered
