@@ -111,21 +111,13 @@ export default function AddNewRecipe() {
   }
 
   function handleSubmit(e) {
-    e.preventDefault();
     if (error.name || error.summary || error.healthScore || error.steps || error.image || form.diets.length===0) {
       alert("Please complete all Inputs");
+      e.preventDefault();
     } else {
       dispatch(addNewRecipetoReducer(form));
       dispatch(getRecipies());
       alert("El formulario se ha enviado");
-      setForm({
-        name: "",
-        summary: "",
-        healthScore: "",
-        steps: "",
-        diets: [],
-        image: ""
-      })
     }
   }
 

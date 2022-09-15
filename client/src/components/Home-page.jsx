@@ -64,7 +64,7 @@ console.log(allRecipes)
     <div>
       <nav className="nav-bar">
       <img className="logo-home-page" src={logo} />
-      <SearchBar/>
+      <SearchBar />
       <div className="select">
         <label className="filters">Order:</label>
         <select

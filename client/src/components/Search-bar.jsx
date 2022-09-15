@@ -4,7 +4,7 @@ import {findFromSearchBar} from "../redux/actions/";
 import { useDispatch } from "react-redux";
 import styles from "../components/styles/search-bar/search-bar.css"
 
-export default function SearchBar() {
+export default function SearchBar({setPage}) {
   let [state, SetState] = useState("");
   let dispatch = useDispatch();
 
